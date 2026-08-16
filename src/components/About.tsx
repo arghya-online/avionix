@@ -15,10 +15,10 @@ const fadeUp = {
 
 const orgs = [
   {
-    name: 'University of Engineering & Management',
-    sub: 'UEM Group',
-    logo: uemLogo,
-    color: '#38BDF8',
+    name: 'Department of Mechanical Engineering',
+    sub: 'IEM Kolkata',
+    logo: iemLogo,
+    color: '#FF5C1A',
   },
   {
     name: 'SAE IEM Collegiate Club',
@@ -33,11 +33,11 @@ const orgs = [
     color: '#FF8C42',
   },
   {
-    name: 'Department of Mechanical Engineering',
-    sub: 'IEM Kolkata',
-    logo: iemLogo,
-    color: '#FF5C1A',
-  }
+    name: 'University of Engineering & Management',
+    sub: 'UEM Group',
+    logo: uemLogo,
+    color: '#38BDF8',
+  },
 ]
 
 export default function About() {

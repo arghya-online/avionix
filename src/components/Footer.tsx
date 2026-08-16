@@ -146,10 +146,10 @@ export default function Footer() {
           {/* Org badges */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
             {[
-              { src: uemLogo, alt: 'UEM' },
+              { src: iemLogo, alt: 'IEM' },
               { src: saeLogo, alt: 'SAE' },
               { src: ieiLogo, alt: 'IEI' },
-              { src: iemLogo, alt: 'IEM' },
+              { src: uemLogo, alt: 'UEM' },
             ].map(org => (
               <div
                 key={org.alt}

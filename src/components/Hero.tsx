@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRegistration } from '../hooks/useRegistration'
 import { ArrowDown, MapPin, Calendar } from 'lucide-react'
@@ -20,7 +20,6 @@ function Streak({ top, delay, duration, width, color, opacity }: {
       opacity,
       animation: `streak-warm ${duration}s ${delay}s ease-in-out infinite`,
       borderRadius: 999,
-      filter: 'blur(0.8px)',
     }} />
   )
 }
@@ -37,7 +36,6 @@ function Ember({ left, delay, size }: { left: string; delay: number; size: numbe
       borderRadius: '50%',
       background: `radial-gradient(circle, #FFE228 0%, #FF5C1A 60%, transparent 100%)`,
       animation: `ember-drift ${3 + Math.random() * 3}s ${delay}s ease-in infinite`,
-      filter: 'blur(0.5px)',
     }} />
   )
 }
@@ -46,26 +44,39 @@ function Ember({ left, delay, size }: { left: string; delay: number; size: numbe
 const letters = 'AVIONIX'.split('')
 
 const letterVariants = {
-  hidden:  { opacity: 0, y: 50, filter: 'blur(12px)', skewX: 5 },
+  hidden:  { opacity: 0, y: 30 },
   visible: (i: number) => ({
-    opacity: 1, y: 0, filter: 'blur(0px)', skewX: 0,
-    transition: { delay: 0.4 + i * 0.09, duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
+    opacity: 1, y: 0,
+    transition: { delay: 0.2 + i * 0.06, duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
   }),
 }
 
 const orgLogos = [
-  { src: uemLogo, alt: 'UEM' },
+  { src: iemLogo, alt: 'IEM' },
   { src: saeLogo, alt: 'SAE' },
   { src: ieiLogo, alt: 'IEI' },
-  { src: iemLogo, alt: 'IEM' },
+  { src: uemLogo, alt: 'UEM' },
 ]
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
-  const bgY      = useTransform(scrollYProgress, [0, 1], ['0%', '28%'])
-  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '14%'])
-  const opacity  = useTransform(scrollYProgress, [0, 0.65], [1, 0])
+
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  const rawBgY      = useTransform(scrollYProgress, [0, 1], ['0%', '28%'])
+  const rawContentY = useTransform(scrollYProgress, [0, 1], ['0%', '14%'])
+  const rawOpacity  = useTransform(scrollYProgress, [0, 0.65], [1, 0])
+
+  const bgY      = isMobile ? 0 : rawBgY
+  const contentY = isMobile ? 0 : rawContentY
+  const opacity  = isMobile ? 1 : rawOpacity
 
   const reg = useRegistration()
 
@@ -76,7 +87,7 @@ export default function Hero() {
       style={{ position: 'relative', minHeight: '100svh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
     >
       {/* ── Background layer ──────────────────────────────────────── */}
-      <motion.div aria-hidden="true" style={{ y: bgY, position: 'absolute', inset: 0 }}>
+      <motion.div aria-hidden="true" style={{ y: bgY, position: 'absolute', inset: 0, willChange: isMobile ? 'auto' : 'transform' }}>
         {/* Warm base gradient */}
         <div style={{
           position: 'absolute', inset: 0,
@@ -89,16 +100,15 @@ export default function Hero() {
         }} />
 
         {/* Hero image */}
-        <div style={{
+        <div className="hero-bg-img" style={{
           position: 'absolute', inset: 0,
           backgroundImage: `url(${heroDroneImg})`,
           backgroundSize: 'cover', backgroundPosition: 'center',
-          mixBlendMode: 'luminosity',
           opacity: 0.3,
         }} />
 
-        {/* Film grain pseudo-overlay via SVG */}
-        <div style={{
+        {/* Film grain pseudo-overlay via SVG (desktop only) */}
+        <div className="hero-effects-layer" style={{
           position: 'absolute', inset: 0, opacity: 0.045,
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
           backgroundSize: '180px 180px',
@@ -134,46 +144,47 @@ export default function Hero() {
         }} />
       </motion.div>
 
-      {/* ── Light streaks ─────────────────────────────────────────── */}
-      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        <Streak top="18%" delay={0}   duration={4.2} width="60vw" color="#FFB020" opacity={0.65} />
-        <Streak top="32%" delay={1.4} duration={5.8} width="75vw" color="#FF5C1A" opacity={0.45} />
-        <Streak top="52%" delay={0.8} duration={4.8} width="45vw" color="#FFE228" opacity={0.35} />
-        <Streak top="70%" delay={2.5} duration={6.5} width="55vw" color="#FF8C42" opacity={0.25} />
-        <Streak top="12%" delay={3.2} duration={5.2} width="35vw" color="#FFB020" opacity={0.2} />
-      </div>
+      {/* ── Ambient visual effects (Streaks, Embers, Scanline) - Desktop only ── */}
+      <div className="hero-effects-layer" aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        {/* Light streaks */}
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          <Streak top="18%" delay={0}   duration={4.2} width="60vw" color="#FFB020" opacity={0.65} />
+          <Streak top="32%" delay={1.4} duration={5.8} width="75vw" color="#FF5C1A" opacity={0.45} />
+          <Streak top="52%" delay={0.8} duration={4.8} width="45vw" color="#FFE228" opacity={0.35} />
+          <Streak top="70%" delay={2.5} duration={6.5} width="55vw" color="#FF8C42" opacity={0.25} />
+          <Streak top="12%" delay={3.2} duration={5.2} width="35vw" color="#FFB020" opacity={0.2} />
+        </div>
 
-      {/* ── Ember particles ───────────────────────────────────────── */}
-      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        {[
-          { left: '15%', delay: 0,   size: 3 },
-          { left: '28%', delay: 1.2, size: 2 },
-          { left: '42%', delay: 0.5, size: 4 },
-          { left: '58%', delay: 2.0, size: 2 },
-          { left: '72%', delay: 0.8, size: 3 },
-          { left: '85%', delay: 1.7, size: 2 },
-          { left: '35%', delay: 3.0, size: 2 },
-          { left: '65%', delay: 2.5, size: 3 },
-        ].map((e, i) => <Ember key={i} {...e} />)}
-      </div>
+        {/* Ember particles */}
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          {[
+            { left: '15%', delay: 0,   size: 3 },
+            { left: '28%', delay: 1.2, size: 2 },
+            { left: '42%', delay: 0.5, size: 4 },
+            { left: '58%', delay: 2.0, size: 2 },
+            { left: '72%', delay: 0.8, size: 3 },
+            { left: '85%', delay: 1.7, size: 2 },
+            { left: '35%', delay: 3.0, size: 2 },
+            { left: '65%', delay: 2.5, size: 3 },
+          ].map((e, i) => <Ember key={i} {...e} />)}
+        </div>
 
-      {/* ── Scanline ──────────────────────────────────────────────── */}
-      <div aria-hidden="true" style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute', left: 0, right: 0, height: '2px',
-          background: 'linear-gradient(to right, transparent 0%, rgba(255,176,32,0.06) 30%, rgba(255,176,32,0.06) 70%, transparent 100%)',
-          animation: 'scan-amber 8s linear infinite',
-          top: 0,
-        }} />
+        {/* Scanline */}
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          <div style={{
+            position: 'absolute', left: 0, right: 0, height: '2px',
+            background: 'linear-gradient(to right, transparent 0%, rgba(255,176,32,0.06) 30%, rgba(255,176,32,0.06) 70%, transparent 100%)',
+            animation: 'scan-amber 8s linear infinite',
+            top: 0,
+          }} />
+        </div>
       </div>
 
       {/* ── Hero content ──────────────────────────────────────────── */}
       <motion.div
         style={{ y: contentY, opacity, position: 'relative', zIndex: 2, textAlign: 'center', padding: '6.5rem 1rem 3rem', width: '100%' }}
       >
-        {/* Prominent Institutional Logos Row: IEM, UEM, IEI, SAE */}
+        {/* Prominent Institutional Logos Row: IEM, SAE, IEI, UEM */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}

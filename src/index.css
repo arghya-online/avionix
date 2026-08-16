@@ -85,17 +85,7 @@ body::before {
   background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
 }
 
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-  mix-blend-mode: overlay;
-}
+
 
 /* ── Scrollbar ───────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
@@ -222,16 +212,27 @@ body::after {
   color: var(--ice);
 }
 
-.text-ivory {
-  color: var(--ivory);
-}
-
 .text-smoke {
   color: var(--smoke);
 }
 
 .text-crimson {
   color: var(--crimson);
+}
+
+/* Desktop only background noise overlay */
+@media (min-width: 769px) {
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    mix-blend-mode: overlay;
+  }
 }
 
 /* ── Chromatic aberration glow (hero wordmark) ───────────────────── */
@@ -242,6 +243,17 @@ body::after {
     0 0 40px rgba(255, 176, 32, 0.85),
     0 0 100px rgba(255, 92, 26, 0.4);
 }
+
+.hero-bg-img {
+  mix-blend-mode: luminosity;
+  will-change: transform;
+}
+
+
+
+
+
+
 
 .glow-fire {
   text-shadow:
@@ -393,6 +405,19 @@ body::after {
     clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
   }
 
+  .chromatic {
+    text-shadow: 0 0 20px rgba(255, 176, 32, 0.7);
+  }
+
+  .hero-bg-img {
+    mix-blend-mode: normal;
+    filter: grayscale(80%);
+  }
+
+  .hero-effects-layer {
+    display: none !important;
+  }
+
   /* Btn full width stacking */
   .btn-fire,
   .btn-ghost {
@@ -400,6 +425,8 @@ body::after {
     justify-content: center;
   }
 }
+
+
 
 @media (max-width: 480px) {
   :root {
