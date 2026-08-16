@@ -188,7 +188,7 @@ export default function Hero() {
             animation: 'fire-pulse 2s infinite',
             boxShadow: '0 0 8px rgba(255,92,26,0.8)',
           }} />
-          Student Drone Competition
+          Organized by Dept. of Mechanical Engineering, IEM Kolkata
         </motion.div>
 
         {/* AVIONIX wordmark - chromatic */}

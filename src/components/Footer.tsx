@@ -50,11 +50,13 @@ export default function Footer() {
               AVIONIX
             </div>
             <p className="font-rajdhani" style={{
-              fontSize: '0.85rem', color: 'var(--ash)', lineHeight: 1.9,
-              letterSpacing: '0.04em',
+              fontSize: '0.88rem', color: 'var(--ash)', lineHeight: 1.8,
+              letterSpacing: '0.03em',
             }}>
-              Student Drone Competition<br />
-              28th August Onwards · IEM Salt Lake, Kolkata
+              Organized by Dept. of Mechanical Engineering, IEM Kolkata<br />
+              <span style={{ fontSize: '0.8rem', color: 'rgba(240,230,211,0.6)' }}>
+                28th August Onwards · IEM Salt Lake, Kolkata
+              </span>
             </p>
 
             {/* Fire rule */}

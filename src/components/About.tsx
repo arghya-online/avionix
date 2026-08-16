@@ -136,8 +136,8 @@ export default function About() {
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={3}
           style={{ marginBottom: '1.25rem' }}
         >
-          <p className="font-rajdhani" style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--amber)' }}>
-            Organized By
+          <p className="font-rajdhani" style={{ fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--amber)' }}>
+            Organized By Dept. of Mechanical Engineering, IEM Kolkata
           </p>
         </motion.div>
 
