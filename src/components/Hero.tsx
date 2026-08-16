@@ -3,6 +3,10 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRegistration } from '../hooks/useRegistration'
 import { ArrowDown, MapPin, Calendar } from 'lucide-react'
 import heroDroneImg from '../assets/hero-drone.png'
+import iemLogo from '../assets/iem.png'
+import uemLogo from '../assets/uem.png'
+import ieiLogo from '../assets/iei.png'
+import saeLogo from '../assets/sae.png'
 
 /* Warm light streak */
 function Streak({ top, delay, duration, width, color, opacity }: {
@@ -42,19 +46,26 @@ function Ember({ left, delay, size }: { left: string; delay: number; size: numbe
 const letters = 'AVIONIX'.split('')
 
 const letterVariants = {
-  hidden: { opacity: 0, y: 50, filter: 'blur(12px)', skewX: 5 },
+  hidden:  { opacity: 0, y: 50, filter: 'blur(12px)', skewX: 5 },
   visible: (i: number) => ({
     opacity: 1, y: 0, filter: 'blur(0px)', skewX: 0,
     transition: { delay: 0.4 + i * 0.09, duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
   }),
 }
 
+const orgLogos = [
+  { src: uemLogo, alt: 'UEM' },
+  { src: saeLogo, alt: 'SAE' },
+  { src: ieiLogo, alt: 'IEI' },
+  { src: iemLogo, alt: 'IEM' },
+]
+
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '28%'])
+  const bgY      = useTransform(scrollYProgress, [0, 1], ['0%', '28%'])
   const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '14%'])
-  const opacity = useTransform(scrollYProgress, [0, 0.65], [1, 0])
+  const opacity  = useTransform(scrollYProgress, [0, 0.65], [1, 0])
 
   const reg = useRegistration()
 
@@ -125,7 +136,7 @@ export default function Hero() {
 
       {/* ── Light streaks ─────────────────────────────────────────── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        <Streak top="18%" delay={0} duration={4.2} width="60vw" color="#FFB020" opacity={0.65} />
+        <Streak top="18%" delay={0}   duration={4.2} width="60vw" color="#FFB020" opacity={0.65} />
         <Streak top="32%" delay={1.4} duration={5.8} width="75vw" color="#FF5C1A" opacity={0.45} />
         <Streak top="52%" delay={0.8} duration={4.8} width="45vw" color="#FFE228" opacity={0.35} />
         <Streak top="70%" delay={2.5} duration={6.5} width="55vw" color="#FF8C42" opacity={0.25} />
@@ -135,7 +146,7 @@ export default function Hero() {
       {/* ── Ember particles ───────────────────────────────────────── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
         {[
-          { left: '15%', delay: 0, size: 3 },
+          { left: '15%', delay: 0,   size: 3 },
           { left: '28%', delay: 1.2, size: 2 },
           { left: '42%', delay: 0.5, size: 4 },
           { left: '58%', delay: 2.0, size: 2 },
@@ -160,23 +171,58 @@ export default function Hero() {
 
       {/* ── Hero content ──────────────────────────────────────────── */}
       <motion.div
-        style={{ y: contentY, opacity, position: 'relative', zIndex: 2, textAlign: 'center', padding: '7rem 1rem 3rem', width: '100%' }}
+        style={{ y: contentY, opacity, position: 'relative', zIndex: 2, textAlign: 'center', padding: '6.5rem 1rem 3rem', width: '100%' }}
       >
+        {/* Prominent Institutional Logos Row: IEM, UEM, IEI, SAE */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.7 }}
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 'clamp(0.6rem, 2.5vw, 1.25rem)',
+            marginBottom: '1.25rem',
+          }}
+        >
+          {orgLogos.map((item) => (
+            <div
+              key={item.alt}
+              style={{
+                height: 'clamp(36px, 7vw, 46px)',
+                padding: '5px clamp(12px, 2.5vw, 20px)',
+                borderRadius: 8,
+                background: 'rgba(255, 255, 255, 0.95)',
+                border: '1px solid rgba(255, 176, 32, 0.3)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5), 0 0 12px rgba(255, 176, 32, 0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'transform 0.2s ease',
+              }}
+            >
+              <img src={item.src} alt={`${item.alt} logo`} style={{ height: '100%', objectFit: 'contain', display: 'block', transform: 'scale(1.35)' }} />
+            </div>
+          ))}
+        </motion.div>
+
         {/* Eyebrow pill */}
         <motion.div
-          initial={{ opacity: 0, y: 24, scale: 0.95 }}
+          initial={{ opacity: 0, y: 18, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 0.15, duration: 0.7 }}
+          transition={{ delay: 0.25, duration: 0.7 }}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
-            marginBottom: '2rem',
+            marginBottom: '1.75rem',
             padding: '0.4rem 1.1rem',
             background: 'rgba(255,176,32,0.08)',
             border: '1px solid rgba(255,176,32,0.28)',
             borderRadius: 999,
             fontSize: '0.68rem',
             fontWeight: 700,
-            letterSpacing: '0.22em',
+            letterSpacing: '0.2em',
             textTransform: 'uppercase',
             color: 'var(--amber)',
             fontFamily: 'Rajdhani, sans-serif',
@@ -228,19 +274,38 @@ export default function Hero() {
           animate={{ scaleX: 1, opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] as const }}
           style={{
-            width: 'min(420px, 80vw)', height: 1, margin: '0.75rem auto 1.5rem',
+            width: 'min(420px, 80vw)', height: 1, margin: '0.75rem auto 1.25rem',
             background: 'linear-gradient(to right, transparent, var(--fire), var(--amber), var(--fire), transparent)',
           }}
         />
+
+        {/* Sub-header: STUDENT DRONE COMPETITION */}
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.05, duration: 0.8 }}
+          className="font-orbitron"
+          style={{
+            fontSize: 'clamp(0.85rem, 2.2vw, 1.35rem)',
+            fontWeight: 800,
+            letterSpacing: '0.28em',
+            color: 'var(--amber)',
+            textTransform: 'uppercase',
+            marginBottom: '0.4rem',
+            textShadow: '0 0 16px rgba(255,176,32,0.4)',
+          }}
+        >
+          Student Drone Competition
+        </motion.p>
 
         {/* Sub-tagline */}
         <motion.p
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.8 }}
+          transition={{ delay: 1.15, duration: 0.8 }}
           className="font-rajdhani"
           style={{
-            fontSize: 'clamp(1rem, 2.8vw, 1.4rem)',
+            fontSize: 'clamp(0.95rem, 2.4vw, 1.25rem)',
             fontWeight: 500,
             letterSpacing: '0.18em',
             color: 'rgba(240,230,211,0.65)',

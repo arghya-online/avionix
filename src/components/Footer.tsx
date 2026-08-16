@@ -146,10 +146,10 @@ export default function Footer() {
           {/* Org badges */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
             {[
-              { src: iemLogo, alt: 'IEM' },
               { src: uemLogo, alt: 'UEM' },
               { src: saeLogo, alt: 'SAE' },
               { src: ieiLogo, alt: 'IEI' },
+              { src: iemLogo, alt: 'IEM' },
             ].map(org => (
               <div
                 key={org.alt}
@@ -164,17 +164,37 @@ export default function Footer() {
                   justifyContent: 'center',
                 }}
               >
-                <img src={org.src} alt={org.alt} style={{ height: '100%', objectFit: 'contain' }} />
+                <img src={org.src} alt={org.alt} style={{ height: '100%', objectFit: 'contain', transform: 'scale(1.35)' }} />
               </div>
             ))}
           </div>
 
-          <p className="font-hud" style={{
-            fontSize: '0.65rem', color: 'rgba(240,230,211,0.2)',
-            letterSpacing: '0.06em',
-          }}>
-            © 2025 AVIONIX. ALL RIGHTS RESERVED.
-          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.35rem' }}>
+            <p className="font-hud" style={{
+              fontSize: '0.65rem', color: 'rgba(240,230,211,0.3)',
+              letterSpacing: '0.06em',
+            }}>
+              © 2025 AVIONIX. ALL RIGHTS RESERVED.
+            </p>
+            <a
+              href="https://github.com/arghya-online"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-hud"
+              style={{
+                fontSize: '0.65rem',
+                color: 'var(--amber)',
+                textDecoration: 'none',
+                letterSpacing: '0.06em',
+                opacity: 0.8,
+                transition: 'opacity 0.2s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.opacity = '1' }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = '0.8' }}
+            >
+              Meet the Developer →
+            </a>
+          </div>
         </div>
       </div>
     </footer>

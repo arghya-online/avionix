@@ -7,7 +7,6 @@ const links = [
   { label: 'Schedule',   href: '#schedule'   },
   { label: 'Categories', href: '#categories' },
   { label: 'Events',     href: '#events'     },
-  { label: 'Register',   href: '#register'   },
   { label: 'Prizes',     href: '#prizes'     },
   { label: 'Contact',    href: '#contact'    },
 ]
@@ -37,7 +36,7 @@ export default function Nav() {
     <motion.header
       initial={{ y: -72, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] as const }}
       style={{
         position: 'fixed', top: '1.25rem', left: 0, right: 0, zIndex: 100,
         pointerEvents: 'none',
@@ -50,7 +49,7 @@ export default function Nav() {
         style={{
           pointerEvents: 'auto',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'rgba(12, 8, 5, 0.88)',
+          background: 'rgba(12, 8, 5, 0.92)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 176, 32, 0.22)',
@@ -58,12 +57,12 @@ export default function Nav() {
           padding: '0.4rem 0.5rem 0.4rem 1.4rem',
           boxShadow: scrolled
             ? '0 8px 32px rgba(0, 0, 0, 0.85), 0 0 20px rgba(255, 92, 26, 0.15)'
-            : '0 4px 24px rgba(0, 0, 0, 0.6)',
+            : '0 4px 24px rgba(0, 0, 0, 0.65)',
           transition: 'all 0.3s ease',
         }}
       >
         {/* Desktop links - centered pill navigation */}
-        <ul className="hidden md:flex" style={{ listStyle: 'none', gap: '0.25rem', alignItems: 'center', margin: 0, padding: 0 }}>
+        <ul className="hidden md:flex" style={{ listStyle: 'none', gap: '0.35rem', alignItems: 'center', margin: 0, padding: 0 }}>
           {links.map(l => {
             const isActive = active === l.href.slice(1)
             return (
@@ -72,12 +71,12 @@ export default function Nav() {
                   href={l.href}
                   style={{
                     display: 'block',
-                    padding: '0.4rem 0.85rem',
+                    padding: '0.42rem 0.95rem',
                     borderRadius: 999,
                     textDecoration: 'none',
                     fontSize: '0.78rem',
                     fontWeight: 700,
-                    letterSpacing: '0.08em',
+                    letterSpacing: '0.09em',
                     textTransform: 'uppercase',
                     fontFamily: 'Rajdhani, sans-serif',
                     color: isActive ? 'var(--amber)' : 'rgba(240,230,211,0.68)',
@@ -109,8 +108,8 @@ export default function Nav() {
               href="#register"
               className="btn-fire"
               style={{
-                marginLeft: '0.5rem',
-                padding: '0.45rem 1.3rem',
+                marginLeft: '0.6rem',
+                padding: '0.45rem 1.35rem',
                 fontSize: '0.75rem',
                 borderRadius: 999,
               }}

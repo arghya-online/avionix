@@ -145,7 +145,7 @@ function EventCard({ ev, index }: { ev: Event; index: number }) {
           <img
             src={ev.imgFile}
             alt={ev.imgAlt}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: 'scale(1.2)' }}
           />
 
           {/* Gradient overlay */}

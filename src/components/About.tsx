@@ -167,7 +167,7 @@ export default function About() {
                 <img
                   src={org.logo}
                   alt={`${org.name} logo`}
-                  style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', transform: 'scale(1.35)' }}
                 />
               </div>
 
