@@ -1,0 +1,582 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap');
+@import "tailwindcss";
+
+/* ── Design Token System: Molten Aerospace ───────────────────────── */
+:root {
+  /* Backgrounds - volcanic warm blacks */
+  --void: #060402;
+  --abyss: #0C0805;
+  --deep: #130D06;
+  --panel: #1C1208;
+  --raised: #241609;
+  --surface: #2C1B0B;
+
+  /* Fire palette */
+  --fire: #FF5C1A;
+  --amber: #FFB020;
+  --plasma: #FFE228;
+  --ember: #FF8C42;
+  --coal: #5C2A0A;
+
+  /* Crimson - used very sparingly */
+  --crimson: #E8392A;
+  --blood: #9B1C1C;
+
+  /* Ice - cool contrast for HUD / technical readouts */
+  --ice: #38BDF8;
+  --frost: #BAE6FD;
+
+  /* Typography */
+  --ivory: #F0E6D3;
+  --smoke: rgba(240, 230, 211, 0.6);
+  --ash: rgba(240, 230, 211, 0.3);
+  --cinder: rgba(240, 230, 211, 0.15);
+
+  /* Panel card system */
+  --card-bg: #1A1008;
+  --card-border: rgba(255, 176, 32, 0.18);
+  --card-shine: rgba(255, 176, 32, 0.07);
+  --card-shadow: 0 4px 48px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 176, 32, 0.09);
+  --card-hover: 0 8px 64px rgba(0, 0, 0, 0.85), 0 0 32px rgba(255, 92, 26, 0.12), inset 0 1px 0 rgba(255, 176, 32, 0.15);
+
+  /* Cut corner size */
+  --cut: 18px;
+
+  --radius-sm: 6px;
+  --radius: 4px;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+}
+
+body {
+  background-color: var(--void);
+  color: var(--ivory);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global website background texture (Noise + Technical Grid) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(ellipse 80% 80% at 50% -20%, rgba(255, 92, 26, 0.15), transparent 70%),
+    radial-gradient(ellipse 60% 60% at 50% 120%, rgba(255, 176, 32, 0.08), transparent 70%),
+    linear-gradient(to right, rgba(255, 176, 32, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 176, 32, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--abyss);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 176, 32, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 176, 32, 0.55);
+}
+
+/* ── Panel Card (replaces glassmorphism) ─────────────────────────── */
+.panel {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+/* Cut-corner aerospace panel */
+.panel-cut {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
+}
+
+.panel>*,
+.panel-cut>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Technical Background Textures & Patterns ────────────────────── */
+.bg-pattern-dots {
+  background-image: radial-gradient(rgba(255, 176, 32, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.bg-pattern-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 176, 32, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 176, 32, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-pattern-stripes {
+  background-image: repeating-linear-gradient(45deg,
+      rgba(255, 92, 26, 0.03),
+      rgba(255, 92, 26, 0.03) 10px,
+      transparent 10px,
+      transparent 20px);
+}
+
+.bg-pattern-hud {
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255, 176, 32, 0.06) 0%, transparent 60%),
+    linear-gradient(to right, rgba(255, 176, 32, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 176, 32, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+}
+
+.bg-pattern-cross {
+  background-image:
+    radial-gradient(rgba(255, 140, 66, 0.15) 1px, transparent 0),
+    linear-gradient(to right, rgba(255, 176, 32, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px, 40px 40px;
+}
+
+/* Corner accent mark on cut panels */
+.panel-cut::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--cut);
+  height: var(--cut);
+  border-top: 1px solid var(--amber);
+  border-right: 1px solid var(--amber);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+  background: rgba(255, 176, 32, 0.12);
+  z-index: 2;
+}
+
+/* ── Typography ──────────────────────────────────────────────────── */
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-rajdhani {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.font-hud {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Color utilities ─────────────────────────────────────────────── */
+.text-fire {
+  color: var(--fire);
+}
+
+.text-amber {
+  color: var(--amber);
+}
+
+.text-plasma {
+  color: var(--plasma);
+}
+
+.text-ice {
+  color: var(--ice);
+}
+
+.text-ivory {
+  color: var(--ivory);
+}
+
+.text-smoke {
+  color: var(--smoke);
+}
+
+.text-crimson {
+  color: var(--crimson);
+}
+
+/* ── Chromatic aberration glow (hero wordmark) ───────────────────── */
+.chromatic {
+  text-shadow:
+    -3px 0 2px rgba(255, 60, 60, 0.7),
+    3px 0 2px rgba(50, 200, 255, 0.6),
+    0 0 40px rgba(255, 176, 32, 0.85),
+    0 0 100px rgba(255, 92, 26, 0.4);
+}
+
+.glow-fire {
+  text-shadow:
+    0 0 16px rgba(255, 92, 26, 0.9),
+    0 0 48px rgba(255, 92, 26, 0.5),
+    0 0 100px rgba(255, 92, 26, 0.2);
+}
+
+.glow-amber {
+  text-shadow:
+    0 0 12px rgba(255, 176, 32, 0.8),
+    0 0 36px rgba(255, 176, 32, 0.4);
+}
+
+/* ── Section label stamp ─────────────────────────────────────────── */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.stamp::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--amber);
+  flex-shrink: 0;
+}
+
+/* ── Fire button ─────────────────────────────────────────────────── */
+.btn-fire {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 2.2rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0C0805;
+  background: linear-gradient(135deg, #FF5C1A 0%, #FFB020 100%);
+  box-shadow: 0 0 24px rgba(255, 92, 26, 0.5), 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.22s ease;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.btn-fire:hover {
+  box-shadow: 0 0 48px rgba(255, 92, 26, 0.75), 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-fire:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  border: 1px solid rgba(240, 230, 211, 0.2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--smoke);
+  background: rgba(240, 230, 211, 0.04);
+  text-decoration: none;
+  transition: all 0.22s ease;
+}
+
+.btn-ghost:hover {
+  border-color: rgba(255, 176, 32, 0.4);
+  color: var(--ivory);
+  background: rgba(255, 176, 32, 0.06);
+}
+
+/* ── Horizontal fire line ────────────────────────────────────────── */
+.fire-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--amber), var(--fire), transparent);
+  opacity: 0.5;
+}
+
+/* ── Section spacing ─────────────────────────────────────────────── */
+.section-pad {
+  padding: 7rem 0;
+}
+
+/* ── Mobile responsive overrides ─────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Section padding */
+  .section-pad {
+    padding: 4rem 0;
+  }
+
+  /* Cut corner smaller on mobile so it doesn't eat card space */
+  :root {
+    --cut: 12px;
+  }
+
+  /* About two-column → single column */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* Schedule card: column layout always on mobile */
+  .schedule-card {
+    padding: 1rem 1.1rem !important;
+    flex-direction: column !important;
+    gap: 0.6rem !important;
+  }
+
+  /* Nav: tighter horizontal padding */
+  nav {
+    padding: 0 1rem !important;
+  }
+
+  /* Floating CTA: smaller on mobile */
+  #floating-register-btn {
+    width: 56px;
+    height: 56px;
+  }
+
+  /* Section headers */
+  .font-orbitron {
+    word-break: break-word;
+  }
+
+  /* Panel cuts on mobile: reduce overflow risk */
+  .panel-cut {
+    clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
+  }
+
+  /* Btn full width stacking */
+  .btn-fire,
+  .btn-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --cut: 10px;
+  }
+
+  .section-pad {
+    padding: 3rem 0;
+  }
+
+  /* Further reduce heading sizes */
+  .font-orbitron {
+    letter-spacing: 0.02em !important;
+  }
+
+  /* Contact grid: 2 columns on narrow phones */
+  .contact-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+/* ── Keyframe animations ─────────────────────────────────────────── */
+@keyframes ember-drift {
+  0% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.8;
+  }
+
+  25% {
+    transform: translateY(-30px) translateX(8px) scale(1.1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-55px) translateX(-5px) scale(0.9);
+    opacity: 0.6;
+  }
+
+  75% {
+    transform: translateY(-80px) translateX(10px) scale(0.7);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: translateY(-110px) translateX(0px) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes streak-warm {
+  0% {
+    transform: translateX(-5%) scaleX(0);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 1;
+    transform: translateX(0%) scaleX(1);
+  }
+
+  88% {
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translateX(108vw) scaleX(1);
+    opacity: 0;
+  }
+}
+
+@keyframes fire-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 92, 26, 0.4), 0 0 60px rgba(255, 92, 26, 0.12);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(255, 92, 26, 0.7), 0 0 100px rgba(255, 176, 32, 0.2);
+  }
+}
+
+@keyframes fire-pulse-text {
+
+  0%,
+  100% {
+    text-shadow: 0 0 16px rgba(255, 92, 26, 0.8), 0 0 48px rgba(255, 92, 26, 0.4);
+  }
+
+  50% {
+    text-shadow: 0 0 32px rgba(255, 176, 32, 1), 0 0 80px rgba(255, 92, 26, 0.6);
+  }
+}
+
+@keyframes scan-amber {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0.04;
+  }
+
+  100% {
+    transform: translateY(100vh);
+    opacity: 0.04;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ping-fire {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+}
+
+@keyframes float-warm {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shimmer-fire {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ── Animation utilities ─────────────────────────────────────────── */
+.animate-fire-pulse {
+  animation: fire-pulse 2.5s ease-in-out infinite;
+}
+
+.animate-float-warm {
+  animation: float-warm 4.5s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+/* ── Reduce motion ───────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
